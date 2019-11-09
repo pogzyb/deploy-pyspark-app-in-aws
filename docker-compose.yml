@@ -12,12 +12,3 @@ services:
       - "vars.env"
     ports:
       - "8080:8080"
-
-  redis:
-    image: redis:5.0-alpine
-    hostname: redis-db
-    container_name: redis-db
-    env_file:
-      - "vars.env"
-    ports:
-      - "6379:6379"

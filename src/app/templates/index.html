@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-pizzaß
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm" style="margin-top: 50px;">
+  <div class="card-header text-white bg-primary">
+    <i class="fas fa-stopwatch"></i> Ride Duration Predictor
+  </div>
+  <div class="card-body">
+    <h4 class="card-title"></h4>
+      {% if payload.duration %}
+        <div class="alert alert-primary" style="margin-bottom: 0rem;" role="alert">
+            <h5>The expected ride time is: <strong>{{ payload.duration }}</strong> minutes!
+            <span class="float-right">...<i class="fas fa-bicycle"></i></span>
+            </h5>
+        </div>
+      {% else %}
+        <form action="/ride" method="post">
+          <div class="form-group">
+            <label for="time">Start Time</label>
+            <input id="time" name="time" class="form-control" type="text" placeholder="" value="" readonly>
+          </div>
+          <div class="form-group">
+            <label for="station-num">Starting Station Number</label>
+            <input type="number" name="station-num" class="form-control" id="station-num" aria-describedby="stationHelp"
+                   placeholder="Enter the station number" min="31000" max="32050" required>
+            <small id="stationHelp" class="form-text text-muted">Station Numbers are within the range: 31000 - 32050</small>
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" name="membership" checked class="form-check-input" id="membership">
+            <label class="form-check-label" for="membership">User has a BikeShare Membership</label>
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-primary">Let's Ride!</button>
+        </form>
+      {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<h5>Bike Station Map</h5>
+<div class="map">
+  <iframe src="/bike_map" style="width: 830px; height: 450px; border-radius: 0.25rem;" frameborder="0"></iframe>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    let interval = setInterval(timeStampHome, 1000);
+    function timeStampHome() {
+        let date;
+        date = new Date();
+        let time = document.getElementById('time');
+        let ts = date.toLocaleTimeString();
+        time.placeholder = ts;
+        time.value = ts;
+    }
+</script>
+{% endblock %}

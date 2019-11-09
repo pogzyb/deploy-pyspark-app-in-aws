@@ -1,4 +1,4 @@
-# src/main.py
+# main.py
 from aiohttp.web import run_app
 from app import create_app
 import asyncio

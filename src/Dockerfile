@@ -1,4 +1,5 @@
-FROM python:3.7-alpine
+#FROM python:3.7-alpine
+FROM doodmanbro/dspython:0.1.0
 
 RUN apk update && \
     apk upgrade && \
@@ -6,8 +7,10 @@ RUN apk update && \
     bash
 
 ENV HOME /code
+ENV PYTHONPATH=$PYTHONPATH:${HOME}/src/ml
 
 COPY ./src/ ${HOME}/src/
+COPY ./tmp /tmp
 WORKDIR ${HOME}/src
 
 RUN pip install -r requirements.txt --upgrade pip
@@ -17,4 +20,4 @@ RUN chmod u+x /usr/local/bin/run.sh
 
 EXPOSE ${APP_PORT}
 
-CMD ["/usr/local/bin/run.sh"]
+ENTRYPOINT "run.sh"
